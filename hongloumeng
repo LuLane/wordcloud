@@ -1,0 +1,26 @@
+from scipy.misc import imread
+import matplotlib .pyplot as plt
+from wordcloud import WordCloud
+import jieba
+from collections import Counter
+import os
+dir = os.path.dirname(__file__)
+fontname = os.path.join(dir,'msyh.ttf')
+text = open('红楼梦.txt', encoding='utf-8', errors='ignore').read()
+text_jieba = list(jieba.cut(text))
+c = Counter(text_jieba)
+commen_c = c.most_common(100)
+bg_pic = imread('honglou.jpg')
+wc = WordCloud(
+    font_path=fontname,
+    background_color='white',
+    max_words=200,
+    mask=bg_pic,
+    max_font_size=100,
+)
+wc.generate_from_frequencies(dict(commen_c))
+plt.figure()
+plt.imshow(wc)
+plt.axis('off')
+plt.show()
+wc.to_file('hlm.jpg')
